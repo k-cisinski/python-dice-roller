@@ -50,7 +50,7 @@ def single_game(saved_params=None):
     if saved_params:
         params = saved_params
     else:
-        params = get_params()
+        params = _get_params()
     
     # creating Dice object
     chosen_dice = Dice(params[0])
@@ -63,7 +63,7 @@ def single_game(saved_params=None):
         
         thrown_values.append(throw_result)
     
-    display_values(thrown_values, chosen_dice)
+    _display_values(thrown_values, chosen_dice)
     
     print_header('⚔️ Do you wish to play again? (y/n)')
     
@@ -192,21 +192,21 @@ def print_header(text, header = 'h1', width=100, border = True):
             
             # divide the remainder between columns unnoticably
             extra = 1 if i < remainder else 0
-            columns.append(get_headers(el, curr_width + extra, border))
+            columns.append(_get_headers(el, curr_width + extra, border))
         
         for lines_tuple in zip(*columns):
             print("".join(lines_tuple))
     
     else:
         
-        header_lines = get_headers(text, curr_width, border)
+        header_lines = _get_headers(text, curr_width, border)
         
         for line in header_lines:
             print(line)
 
 # GETS
 
-def get_headers(text, width, border):
+def _get_headers(text, width, border):
     
     # secure str type
     text = str(text)
@@ -235,28 +235,28 @@ def get_headers(text, width, border):
     
     return [top, empty, txt, empty, bottom]
 
-def get_params():
+def _get_params():
     
-    type = get_dice_type()
-    amount = get_dice_amount()
+    type = _get_dice_type()
+    amount = _get_dice_amount()
     
-    if validate_data(type, amount):
+    if _validate_data(type, amount):
         return [type, int(amount)]
     else:
         clear_screen()
         print('Wrong attributes, try again...')
-        return get_params()
+        return _get_params()
 
-def get_dice_type():
+def _get_dice_type():
     print_header('Insert desired dice type.', header='h1')
     return input('\n\nPossible options:d4, d6, d8, d10, d12, d20 : ')
 
-def get_dice_amount():
+def _get_dice_amount():
     return input('\n\nInsert desired dice amount to throw: ')
 
 # FUNCTIONALITY
 
-def display_values(thrown_values, dice_object):
+def _display_values(thrown_values, dice_object):
     
     print_header('', header='h1', border=False)
     
@@ -286,7 +286,7 @@ def display_values(thrown_values, dice_object):
     
     print_header(result, header ='h1')
 
-def validate_data(type, amount):
+def _validate_data(type, amount):
     # asking Dice class whether type exists
     if Dice.is_valid_type(type) and amount.isdigit() and int(amount) > 0:
         return True
